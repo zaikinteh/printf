@@ -16,8 +16,9 @@ int _printf(const char *format, ...)
 	va_list myval;
 	
 	int num_of_chars = 0;
+	
+	int s;
 	char c;
-	char s;
 
 	va_start(myval, format);
 	while (*format != '\0')
@@ -28,13 +29,19 @@ int _printf(const char *format, ...)
 		num_of_chars++;
 		{
 			if (*format == 'c')
-				va_arg(myval, c);
-				write(1, format, c);
+			{
+				va_arg(myval, int);
+				write(1, format, c );
+			}
 			else if (*format == 's')
-				va_arg(myval, s);
-				write(1, format, s);
+			{
+				va_arg(myval, int); 
+				write(1, format, s );
+			}
 			else if (*format == '%')
+			{
 				write(1, format, 1);
+			}
 		}
 		format++;
 		num_of_chars++;
