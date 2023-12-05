@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include  <stdarg.h>
 #include "main.h"
 
@@ -10,32 +11,35 @@
  * to end output to strings).
  */
 
-int _printf(const char *format, ...);
+int _printf(const char *format, ...)
 {
 	va_list myval;
+	
+	int num_of_chars = 0;
+	char c;
+	char s;
 
-	num_of_chars = 0;
-
-	int i = *format;
-
-	va_start(myval, *format);
-	if (i == '\0')
-		return (num_of_chars);
-	else if (i == '%')
-		i++;
+	va_start(myval, format);
+	while (*format != '\0')
 	{
-		if (i == 'c')
-			_printf("%c is a char" i);
-		else if (i == 's')
-			_printf("%s is a string" i);
-		else
-			_printf("%% is a percent sign" i);
-	}
-	num_of_chars++;
-	else
+		while (*format != '%')
+			write(1, format, 1);
+		format++;
 		num_of_chars++;
-	format++;
-	va_arg(myval, *format);
+		{
+			if (*format == 'c')
+				va_arg(myval, c);
+				write(1, format, c);
+			else if (*format == 's')
+				va_arg(myval, s);
+				write(1, format, s);
+			else if (*format == '%')
+				write(1, format, 1);
+		}
+		format++;
+		num_of_chars++;
 
-	va_end(myval);
+		va_end(myval);
+	}
+	return (num_of_chars);
 }
